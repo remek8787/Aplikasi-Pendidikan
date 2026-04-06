@@ -10,7 +10,7 @@ require("../../konek/crud.php");
         'jenjang' => $_POST['jenjang'],
 		'jenis' => $_POST['jenis'],
 		'npsn' => $_POST['npsn'],
-		'kode_server' => $_POST['kode_server'],
+		'kode_sekolah' => $_POST['kode_server'],
         'kepsek' => $_POST['kepsek'],
         'nip' => $_POST['nip'],
 		'nowa' => $_POST['nowa'],
@@ -18,7 +18,7 @@ require("../../konek/crud.php");
 		'desa' => $_POST['desa'],
         'kecamatan' => $_POST['kec'],
         'kabupaten' => $_POST['kab'],
-		 'propinsi' => $_POST['prop'],
+		'propinsi' => $_POST['prop'],
         'email' => $_POST['email'],
         'waktu' => $_POST['waktu'],
 		'semester' => $_POST['semester'],
@@ -26,9 +26,7 @@ require("../../konek/crud.php");
 		'tanggal_rapor' => $_POST['tgl'],
 		'server' => $_POST['server'],
 		'url_api' => $_POST['apiwa'],
-		'header' => $_POST['laporan'],
-		'yayasan' => $_POST['yayasan'],
-		'ketua' => $_POST['ketua']
+		'header' => $_POST['laporan']
     ];
     $exec = update($koneksi, 'pengaturan', $data, ['id_aplikasi' => 1]);
 	

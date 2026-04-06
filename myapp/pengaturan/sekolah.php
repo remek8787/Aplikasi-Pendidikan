@@ -36,7 +36,7 @@ $cetak = fetch($koneksi,'cetak',['id'=>1]);
 						</div>
 				<div class='col-md-4'>
                 <label class="bold">KODE SERVER</label>
-                    <input type='text' name='kode_server' value="<?= $setting['kode_server'] ?>"  class='form-control' required='true' />
+                    <input type='text' name='kode_server' value="<?= $setting['kode_sekolah'] ?>"  class='form-control' required='true' />
                        </div>		
 				<div class='col-md-4'>
                 <label class="bold">NPSN</label>
