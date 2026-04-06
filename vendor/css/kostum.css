@@ -1,0 +1,42 @@
+
+       
+        .soal img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .main-header .sidebar-baru {
+            float: left;
+            color: white;
+            padding: 15px 15px;
+            cursor: pointer;
+        }
+
+        .callout {
+            border-left: 0px;
+        }
+
+        .btn {
+
+            border-radius: 0.6em;
+        }
+
+        .btn-primary {
+            background-color: blue;
+            border-color: #367fa9;
+            font-weight: bolder;
+        }
+
+        .btn.btn-flat {
+            border-radius: 10em;
+        }
+
+        .skin-red-light .sidebar-menu>li:hover>a,
+        .skin-red-light .sidebar-menu>li.active>a {
+            color: #fff;
+            background: #e111e8;
+        }
+        
+		
+
+ 
