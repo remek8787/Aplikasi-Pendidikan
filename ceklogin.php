@@ -2,7 +2,7 @@
 require("konek/koneksi.php");
 $username = mysqli_escape_string($koneksi, $_POST['username']);
 $password = mysqli_escape_string($koneksi, $_POST['password']);
-$siswaQ = mysqli_query($koneksi, "SELECT * FROM siswa WHERE username='$username' and blok='0'");
+$siswaQ = mysqli_query($koneksi, "SELECT * FROM siswa WHERE username='$username'");
 if ($username <> "" and $password <> "") {
 	if (mysqli_num_rows($siswaQ) == 0) {
 		echo "td";
