@@ -398,3 +398,13 @@ export function getModulesForRole(roleCode: RoleCode) {
 export function getDemoUserByEmail(email: string) {
   return demoUsers.find((user) => user.email.toLowerCase() === email.toLowerCase());
 }
+
+export function getDemoUserByRoleSlug(roleSlug: string) {
+  const role = getRoleBySlug(roleSlug);
+
+  if (!role) {
+    return null;
+  }
+
+  return demoUsers.find((user) => user.roleCode === role.code) ?? null;
+}

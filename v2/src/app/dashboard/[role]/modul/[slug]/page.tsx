@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
-import { requireSessionForRole } from "@/lib/auth";
-import { getModuleBySlug, getRoleBySlug } from "@/lib/platform-data";
+import { getModuleBySlug, getModulesForRole, getRoleBySlug, roleOrder } from "@/lib/platform-data";
 
 type ModuleDetailPageProps = {
   params: Promise<{
@@ -11,13 +10,15 @@ type ModuleDetailPageProps = {
   }>;
 };
 
+export function generateStaticParams() {
+  return roleOrder.flatMap((roleCode) => {
+    const roleSlug = roleCode.toLowerCase();
+    return getModulesForRole(roleCode).map((feature) => ({ role: roleSlug, slug: feature.slug }));
+  });
+}
+
 export default async function ModuleDetailPage({ params }: ModuleDetailPageProps) {
   const { role, slug } = await params;
-  const session = await requireSessionForRole(role);
-
-  if (!session) {
-    redirect("/login");
-  }
 
   const roleDef = getRoleBySlug(role);
   const feature = getModuleBySlug(slug);
@@ -29,7 +30,7 @@ export default async function ModuleDetailPage({ params }: ModuleDetailPageProps
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-        <Link href={`/dashboard/${role}`} className="font-medium text-slate-700 hover:text-slate-950">
+        <Link href={`/dashboard/${role}/`} className="font-medium text-slate-700 hover:text-slate-950">
           ← Kembali ke dashboard
         </Link>
         <span>•</span>

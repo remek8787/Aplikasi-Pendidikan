@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { logout } from "@/lib/auth";
 import { getModulesForRole, getRoleBySlug, getUnitByCode, type DemoUser } from "@/lib/platform-data";
 
 type DashboardShellProps = {
@@ -14,13 +12,6 @@ type DashboardShellProps = {
   };
   children: React.ReactNode;
 };
-
-async function logoutAction() {
-  "use server";
-
-  await logout();
-  redirect("/login");
-}
 
 export function DashboardShell({ roleSlug, session, children }: DashboardShellProps) {
   const role = getRoleBySlug(roleSlug);
@@ -74,20 +65,20 @@ export function DashboardShell({ roleSlug, session, children }: DashboardShellPr
           <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5">
             <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Catatan pondasi</p>
             <ul className="mt-4 space-y-3 text-sm text-slate-300">
-              <li>• Auth masih mode demo cookie-based untuk validasi alur UI.</li>
+              <li>• Versi hosting ini berjalan sebagai static preview untuk validasi alur UI.</li>
               <li>• Database starter disiapkan via Prisma + SQLite.</li>
               <li>• Target berikutnya: auth nyata, API, dan workflow tiap modul.</li>
             </ul>
           </div>
 
-          <form action={logoutAction} className="mt-8">
-            <button
-              type="submit"
-              className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/5 hover:text-white"
+          <div className="mt-8">
+            <Link
+              href="/login/"
+              className="flex w-full items-center justify-center rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/5 hover:text-white"
             >
-              Keluar demo session
-            </button>
-          </form>
+              Kembali ke pilih role
+            </Link>
+          </div>
         </aside>
 
         <main className="bg-slate-50 text-slate-950">

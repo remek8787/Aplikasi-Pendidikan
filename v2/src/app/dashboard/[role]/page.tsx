@@ -1,8 +1,5 @@
-import { redirect } from "next/navigation";
-
 import { ModuleCard } from "@/components/module-card";
-import { requireSessionForRole } from "@/lib/auth";
-import { getModulesForRole, getRoleBySlug, getUnitByCode, modules } from "@/lib/platform-data";
+import { getDemoUserByRoleSlug, getModulesForRole, getRoleBySlug, getUnitByCode, modules } from "@/lib/platform-data";
 
 type RoleDashboardPageProps = {
   params: Promise<{
@@ -10,23 +7,22 @@ type RoleDashboardPageProps = {
   }>;
 };
 
+export function generateStaticParams() {
+  return ["admin", "guru", "siswa", "staff", "pengawas"].map((role) => ({ role }));
+}
+
 export default async function RoleDashboardPage({ params }: RoleDashboardPageProps) {
   const { role } = await params;
-  const session = await requireSessionForRole(role);
-
-  if (!session) {
-    redirect("/login");
-  }
-
+  const user = getDemoUserByRoleSlug(role);
   const roleDef = getRoleBySlug(role);
 
-  if (!roleDef) {
-    redirect("/dashboard");
+  if (!user || !roleDef) {
+    return null;
   }
 
-  const roleModules = getModulesForRole(session.roleCode);
-  const unit = getUnitByCode(session.unitCode);
-  const readyModules = modules.filter((module) => module.status === "Foundation Ready").length;
+  const roleModules = getModulesForRole(user.roleCode);
+  const unit = getUnitByCode(user.unitCode);
+  const readyModules = modules.filter((feature) => feature.status === "Foundation Ready").length;
 
   return (
     <div className="space-y-8">
@@ -36,7 +32,7 @@ export default async function RoleDashboardPage({ params }: RoleDashboardPagePro
             <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Dashboard role-based</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight">{roleDef.name} Workspace</h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
-              Fokus role ini: {roleDef.focus.join(", ")}. Saat ini dashboard menjadi shell awal untuk menata prioritas fitur, data yang dibutuhkan, dan jalur implementasi MVP.
+              Fokus role ini: {roleDef.focus.join(", ")}. Ini adalah preview dashboard fondasi untuk memperlihatkan struktur kerja tiap role sebelum masuk ke implementasi backend penuh.
             </p>
           </div>
 
@@ -71,13 +67,13 @@ export default async function RoleDashboardPage({ params }: RoleDashboardPagePro
         </article>
 
         <article className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm shadow-slate-900/5">
-          <p className="text-xs uppercase tracking-[0.28em] text-slate-400">User context</p>
-          <h2 className="mt-3 text-xl font-semibold text-slate-950">{session.name}</h2>
+          <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Preview user</p>
+          <h2 className="mt-3 text-xl font-semibold text-slate-950">{user.name}</h2>
           <div className="mt-4 space-y-3 text-sm text-slate-600">
-            <p>Email: {session.email}</p>
-            <p>Role code: {session.roleCode}</p>
+            <p>Email: {user.email}</p>
+            <p>Role code: {user.roleCode}</p>
             <p>Unit: {unit?.name}</p>
-            <p>Mode: demo session cookie-based</p>
+            <p>Mode: static hosting preview</p>
           </div>
         </article>
       </section>
@@ -94,8 +90,8 @@ export default async function RoleDashboardPage({ params }: RoleDashboardPagePro
         </div>
 
         <div className="mt-8 grid gap-5 xl:grid-cols-2">
-          {roleModules.map((module) => (
-            <ModuleCard key={module.slug} module={module} href={`/dashboard/${role}/modul/${module.slug}`} />
+          {roleModules.map((feature) => (
+            <ModuleCard key={feature.slug} module={feature} href={`/dashboard/${role}/modul/${feature.slug}/`} />
           ))}
         </div>
       </section>

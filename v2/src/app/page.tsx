@@ -1,12 +1,9 @@
 import Link from "next/link";
 
 import { ModuleCard } from "@/components/module-card";
-import { getSession } from "@/lib/auth";
 import { architecturePillars, modules, roles, schoolUnits } from "@/lib/platform-data";
 
-export default async function HomePage() {
-  const session = await getSession();
-
+export default function HomePage() {
   return (
     <div className="pb-20">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
@@ -28,10 +25,10 @@ export default async function HomePage() {
             Demo login
           </Link>
           <Link
-            href={session ? `/dashboard/${session.roleSlug}` : "/login"}
+            href="/dashboard/"
             className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
           >
-            {session ? "Masuk ke dashboard" : "Lihat dashboard"}
+            Lihat dashboard
           </Link>
         </div>
       </header>
@@ -83,7 +80,7 @@ export default async function HomePage() {
               <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Apa yang sudah hidup</p>
               <ul className="mt-5 space-y-3 text-sm text-slate-300">
                 <li>• Landing page & product overview</li>
-                <li>• Login UI dengan demo session per role</li>
+                <li>• Login/selector UI untuk preview per role</li>
                 <li>• Dashboard shell role-based</li>
                 <li>• Halaman placeholder untuk modul utama</li>
                 <li>• Prisma schema + seed data awal</li>

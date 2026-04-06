@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { DashboardShell } from "@/components/dashboard-shell";
-import { requireSessionForRole } from "@/lib/auth";
+import { getDemoUserByRoleSlug, getRoleBySlug } from "@/lib/platform-data";
 
 type RoleLayoutProps = {
   children: React.ReactNode;
@@ -10,22 +10,27 @@ type RoleLayoutProps = {
   }>;
 };
 
+export function generateStaticParams() {
+  return ["admin", "guru", "siswa", "staff", "pengawas"].map((role) => ({ role }));
+}
+
 export default async function RoleLayout({ children, params }: RoleLayoutProps) {
   const { role } = await params;
-  const session = await requireSessionForRole(role);
+  const roleDef = getRoleBySlug(role);
+  const user = getDemoUserByRoleSlug(role);
 
-  if (!session) {
-    redirect("/login");
+  if (!roleDef || !user) {
+    redirect("/dashboard/");
   }
 
   return (
     <DashboardShell
       roleSlug={role}
       session={{
-        name: session.name,
-        email: session.email,
-        roleCode: session.roleCode,
-        unitCode: session.unitCode,
+        name: user.name,
+        email: user.email,
+        roleCode: user.roleCode,
+        unitCode: user.unitCode,
       }}
     >
       {children}
