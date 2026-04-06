@@ -42,6 +42,18 @@ $firstError = null;
 
 mysqli_query($koneksi, 'SET FOREIGN_KEY_CHECKS=0');
 
+// Clean existing partially imported tables first.
+$tables = [];
+$res = mysqli_query($koneksi, 'SHOW TABLES');
+if ($res) {
+    while ($row = mysqli_fetch_row($res)) {
+        if (!empty($row[0])) $tables[] = '`' . str_replace('`', '``', $row[0]) . '`';
+    }
+}
+if ($tables) {
+    mysqli_query($koneksi, 'DROP TABLE IF EXISTS ' . implode(',', $tables));
+}
+
 foreach ($parts as $part) {
     $stmt = trim($part);
     if ($stmt === '') continue;
