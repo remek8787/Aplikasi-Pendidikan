@@ -15,7 +15,7 @@ if (!$koneksi) {
 mysqli_set_charset($koneksi, 'utf8mb4');
 mysqli_query($koneksi, "SET SESSION sql_mode='' ");
 
-$source = __DIR__ . '/myapp/pengaturan/backup/newsandik1749048925.sql';
+$source = __DIR__ . '/myapp/pengaturan/smadcsth_demoesandik (2).sql';
 if (!file_exists($source)) {
     echo "SQL source not found: $source\n";
     exit;
@@ -26,11 +26,6 @@ if ($sql === false) {
     echo "Failed to read SQL source\n";
     exit;
 }
-
-// Repair malformed dump fragments found in m_sub_elemen rows.
-$sql = preg_replace('/"\R\s*",""\s*\R\s*/u', '","', $sql);
-$sql = preg_replace('/"\R\s*","/u', '","', $sql);
-$sql = preg_replace('/",""\s*\R\s*/u', '","', $sql);
 
 // Remove incompatible DB-select statements if present.
 $sql = preg_replace('/^\s*CREATE DATABASE.*?;\s*$/mi', '', $sql);
