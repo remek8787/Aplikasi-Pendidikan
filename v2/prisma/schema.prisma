@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum EducationLevel {
+  SD
+  SMP
+  SMA
+}
+
+enum ModuleStatus {
+  FOUNDATION_READY
+  MVP_PLANNING
+  DISCOVERY
+}
+
+model SchoolUnit {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  level       EducationLevel
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id             String     @id @default(cuid())
+  email          String     @unique
+  name           String
+  passwordHash   String?
+  badge          String?
+  roleId         String
+  role           Role       @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  schoolUnitId   String?
+  schoolUnit     SchoolUnit? @relation(fields: [schoolUnitId], references: [id], onDelete: SetNull)
+  employeeNumber String?
+  studentNumber  String?
+  phone          String?
+  isActive       Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model FeatureModule {
+  id          String       @id @default(cuid())
+  code        String       @unique
+  slug        String       @unique
+  name        String
+  category    String
+  description String
+  status      ModuleStatus
+  ownerRoles  String
+  route       String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model NotificationChannel {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  isActive  Boolean  @default(false)
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
