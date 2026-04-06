@@ -34,9 +34,9 @@ $baseurl = "https://".$_SERVER['HTTP_HOST'];
 
 
 $host = 'localhost';
-$username = 'smadcsth_demoesandik';
-$password = 'smadcsth_demoesandik';
-$database = 'smadcsth_demoesandik';
+$username = 'dentanet_demoesandik';
+$password = '@demoesandik';
+$database = 'dentanet_demoesandik';
 
 $koneksi = mysqli_connect($host, $username, $password, "");
 if ($koneksi) {
