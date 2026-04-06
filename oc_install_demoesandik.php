@@ -13,6 +13,7 @@ if (!$koneksi) {
 }
 
 mysqli_set_charset($koneksi, 'utf8mb4');
+mysqli_query($koneksi, "SET SESSION sql_mode='' ");
 
 $source = __DIR__ . '/myapp/pengaturan/backup/newsandik1749048925.sql';
 if (!file_exists($source)) {
