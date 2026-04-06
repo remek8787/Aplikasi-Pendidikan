@@ -34,19 +34,16 @@ endif;
  
 ?>
 <?php
-  $array_browsers = ["OPR" => "Oper", "opera" => "Opera", "Edg" => "Microsoft Edge", "Chrome" => "Google Chrome", "Safari" => "Safari", "Firefox" => "Mozilla Firefox", "MSIE" => "Internet Explore", "Trident" => "Internet Explore", "Other" => "Unknown Browser"];  
-  $agent = $_SERVER['HTTP_USER_AGENT'];
-  $jenis_browser="";
+  $array_browsers = ["OPR" => "Opera", "opera" => "Opera", "Edg" => "Microsoft Edge", "Chrome" => "Google Chrome", "Safari" => "Safari", "Firefox" => "Mozilla Firefox", "MSIE" => "Internet Explorer", "Trident" => "Internet Explorer", "Other" => "Unknown Browser"];  
+  $agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+  $jenis_browser = "Unknown Browser";
   foreach ($array_browsers as $key => $value) {
     if (strpos($agent, $key) !== false) {
       $jenis_browser = $value;
       break;
-    }   
- 
+    }
   }
- if( $jenis_browser<>"Google Chrome"){
-	echo '<meta content="0; url=blok.php" http-equiv="refresh">'; 
- }
+  $browserWarning = in_array($jenis_browser, ['Internet Explorer', 'Unknown Browser'], true);
 ?>
 
 <?php if($jbank==0): ?>

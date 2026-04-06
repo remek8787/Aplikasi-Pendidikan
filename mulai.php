@@ -4,7 +4,7 @@ require("konek/function.php");
 
 $array_browsers = ["OPR" => "Opera", "opera" => "Opera", "Edg" => "Microsoft Edge", "Chrome" => "Google Chrome", "Safari" => "Safari", "Firefox" => "Mozilla Firefox", "MSIE" => "Internet Explorer", "Trident" => "Internet Explorer"];
 
-$agent = $_SERVER['HTTP_USER_AGENT'];
+$agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 $jenis_browser = "Unknown Browser";
 foreach ($array_browsers as $key => $value) {
     if (strpos($agent, $key) !== false) {
@@ -13,10 +13,7 @@ foreach ($array_browsers as $key => $value) {
     }
 }
 
-if ($jenis_browser !== "Google Chrome") {
-    echo '<meta http-equiv="refresh" content="0;url=blok.php">';
-    exit;
-}
+$browserWarning = in_array($jenis_browser, ['Internet Explorer', 'Unknown Browser'], true);
 ?>
 
 <!DOCTYPE html>
@@ -219,9 +216,6 @@ if ($jenis_browser !== "Google Chrome") {
 <body>
 
 <!-- Loader -->
-<body>
-
-<!-- Loader -->
 <div class="pre-loader" id="preLoader">
     <img src="images/animasi.gif" alt="Loading..." />
     <div>Memuat aplikasi...</div>
@@ -246,6 +240,12 @@ if ($jenis_browser !== "Google Chrome") {
             </div>
 
             <div class="login-form-title">Login Siswa</div>
+
+            <?php if ($browserWarning): ?>
+                <div class="alert alert-warning" role="alert" style="border-radius:12px; font-size: 0.95rem;">
+                    Browser Anda terdeteksi <b><?= htmlspecialchars($jenis_browser) ?></b>. Aplikasi akan lebih stabil jika memakai Chrome, Edge, atau Firefox versi terbaru.
+                </div>
+            <?php endif; ?>
 
             <!-- Gambar login.png di bawah teks Login Siswa -->
             <div class="login-image-below-title">
